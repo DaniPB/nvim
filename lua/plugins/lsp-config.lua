@@ -36,6 +36,9 @@ return {
       })
 
       vim.keymap.set("n", "H", vim.lsp.buf.hover, {})
+      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
       vim.diagnostic.config({
         underline = false,
         -- virtual_text = true,
