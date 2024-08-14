@@ -1,44 +1,3 @@
--- return {
---   {
---     "hrsh7th/nvim-cmp",
---     config = function()
---       local cmp = require("cmp")
---
---       cmp.setup({
---         sources = {
---           { name = "nvim_lsp" },
---           { name = "luasnip" },
---           { name = "ctags" },
---         },
---         mapping = {
---           ["<C-a>"] = cmp.mapping.abort(),
---           ["<Up>"] = cmp.mapping.select_prev_item({behavior = "select"}),
---           ["<Down>"] = cmp.mapping.select_next_item({behavior = "select"}),
---           ["<C-p>"] = cmp.mapping(function()
---             if cmp.visible() then
---               cmp.select_prev_item({behavior = "insert"})
---             else
---               cmp.complete()
---             end
---           end),
---           ["<C-n>"] = cmp.mapping(function()
---             if cmp.visible() then
---               cmp.select_next_item({behavior = "insert"})
---             else
---               cmp.complete()
---             end
---           end),
---         },
---         snippet = {
---           expand = function(args)
---             require("luasnip").lsp_expand(args.body)
---           end,
---         },
---       })
---     end
---   }
--- }
---
 local function cmp_setup()
   local cmp = require("cmp")
   local lspkind = require("lspkind")
@@ -80,29 +39,22 @@ local function cmp_setup()
       completeopt = "menu,menuone,noinsert,noselect",
     },
     mapping = cmp.mapping.preset.insert({
+      ["<C-a>"] = cmp.mapping.abort(),
+      ["<Up>"] = cmp.mapping.select_prev_item({behavior = "select"}),
+      ["<Down>"] = cmp.mapping.select_next_item({behavior = "select"}),
       ["<C-b>"] = cmp.mapping.scroll_docs(-4),
       ["<C-f>"] = cmp.mapping.scroll_docs(4),
       ["<C-Space>"] = cmp.mapping.complete(),
-      -- ['<C-e>'] = cmp.mapping.abort(),
-      ["<Tab>"] = function(fallback) -- commented to avoid colliding with codeium
-        if cmp.visible() then
-          cmp.select_next_item()
-        else
-          fallback()
-        end
-      end,
       ['<CR>'] = cmp.mapping.confirm({ select = false }),
-      -- ["<CR>"] = cmp.mapping({
-      -- 	i = function(fallback)
-      -- 		if cmp.visible() and cmp.get_active_entry() then
-      -- 			cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-      -- 		else
-      -- 			fallback()
-      -- 		end
-      -- 	end,
-      -- 	s = cmp.mapping.confirm({ select = true }),
-      -- 	c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-      -- }),
+      ["<C-n>"] = cmp.mapping(function()
+        if cmp.visible() then
+          cmp.select_next_item({behavior = "insert"})
+        else
+          cmp.complete()
+        end
+      end),
+
+
     }),
     sources = {
       { name = "nvim_lua" }, -- plugin excludes itself from non-lua buffers
@@ -127,12 +79,6 @@ local function cmp_setup()
           gh_issues = "<git",
           ctags     = "<tag",
         },
-        -- The function below will be called before any actual modifications from lspkind
-        -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-        -- before = function (entry, vim_item)
-        --   ...
-        --   return vim_item
-        -- end
       }),
     },
   })
@@ -144,24 +90,6 @@ local function cmp_setup()
       { name = "buffer" },
     }),
   })
-
-  -- -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-  -- cmp.setup.cmdline({ "/", "?" }, {
-  -- 	mapping = cmp.mapping.preset.cmdline(),
-  -- 	sources = {
-  -- 		{ name = "buffer" },
-  -- 	},
-  -- })
-
-  -- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  -- cmp.setup.cmdline(":", {
-  -- 	mapping = cmp.mapping.preset.cmdline(),
-  -- 	sources = cmp.config.sources({
-  -- 		{ name = "path" },
-  -- 	}, {
-  -- 		{ name = "cmdline", keyword_length = 5 },
-  -- 	}),
-  -- })
 end
 
 return {
@@ -173,6 +101,7 @@ return {
   { "hrsh7th/cmp-nvim-lsp" }, -- completions from LSP
   { "hrsh7th/cmp-nvim-lua" }, -- neovim lua API
   { "delphinus/cmp-ctags" },  -- completions from Ctags
+  { "github/copilot.vim" },
 
   -- Snippets
   { "L3MON4D3/LuaSnip" },
