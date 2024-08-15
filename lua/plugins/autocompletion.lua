@@ -64,6 +64,7 @@ local function cmp_setup()
       -- { name = "cmdline" },
       { name = "ctags" },
       { name = "buffer",  keyword_length = 3 },
+      { name = "emoji" },
     },
     formatting = {
       format = lspkind.cmp_format({

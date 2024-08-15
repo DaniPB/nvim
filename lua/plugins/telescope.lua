@@ -16,6 +16,7 @@ return {
       end)
 
       require("telescope").load_extension("ui-select")
+      require("telescope").load_extension("emoji")
     end,
   },
   {
