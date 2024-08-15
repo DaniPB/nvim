@@ -12,7 +12,8 @@ return {
         ensure_installed = {
           "lua_ls",
           "rubocop",
-          "solargraph"
+          "solargraph",
+          "ruby_lsp"
         }
       })
     end
@@ -21,9 +22,31 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       local lspconfig = require("lspconfig")
-      lspconfig.lua_ls.setup({})
-      lspconfig.solargraph.setup({})
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
+      lspconfig.lua_ls.setup({
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            diagnostics = {
+              -- globals = {"vim"}
+            }
+          }
+        }
+      })
+      lspconfig.solargraph.setup({
+        capabilities = capabilities,
+        settings = {
+          solargraph = {
+            diagnostics = true,
+            completion = true,
+            formatting = true
+          }
+        }
+      })
       lspconfig.rubocop.setup({
+        capabilities = capabilities,
         cmd = {'docker', 'compose', 'run', '--rm', 'web', 'bundle', 'exec', 'rubocop', '--lsp', '--config', '.rubocop.yml'},
         init_options = { formatting = true },
         -- Aquí puedes agregar la configuración específica para RuboCop
@@ -34,11 +57,15 @@ return {
           }
         }
       })
+      lspconfig.ruby_lsp.setup({
+        capabilities = capabilities,
+      })
 
       vim.keymap.set("n", "H", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
+      vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, {})
       vim.diagnostic.config({
         underline = false,
         -- virtual_text = true,
