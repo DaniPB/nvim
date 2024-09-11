@@ -14,3 +14,9 @@ end
 
 -- Map a key to print and copy the current file path to the clipboard
 vim.api.nvim_set_keymap('n', '<leader>fp', [[:lua print(get_current_file_path())<CR>:let @+=get_current_file_path()<CR>]], {noremap = true, silent = true})
+
+-- JBuilder files sintaxt highlighting
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+  pattern = "*.jbuilder",
+  command = "set filetype=ruby",
+})
