@@ -7,13 +7,13 @@ vim.cmd [[command! -nargs=0 Nai set noautoindent]]
 vim.cmd [[command! -nargs=0 Removetabs %s/^I/  /g]]
 vim.cmd [[command! -nargs=0 FormatJSON %!jq .]]
 
--- Define a function to get the current file path
-function get_current_file_path()
-    return vim.fn.expand('%:p')
-end
+vim.keymap.set('n', '<leader>cp', function()
+  vim.fn.setreg('+', vim.fn.expand("%"))
+end, { desc = "Copy current file path to clipboard" })
 
--- Map a key to print and copy the current file path to the clipboard
-vim.api.nvim_set_keymap('n', '<leader>fp', [[:lua print(get_current_file_path())<CR>:let @+=get_current_file_path()<CR>]], {noremap = true, silent = true})
+vim.keymap.set('n', '<leader>cl', function()
+  vim.fn.setreg('+', vim.fn.expand("%") .. ":" .. vim.fn.line("."))
+end, { desc = "Copy current file path with line number to clipboard" })
 
 -- JBuilder files sintaxt highlighting
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {

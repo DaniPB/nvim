@@ -102,7 +102,9 @@ return {
   { "hrsh7th/cmp-nvim-lsp" }, -- completions from LSP
   { "hrsh7th/cmp-nvim-lua" }, -- neovim lua API
   { "delphinus/cmp-ctags" },  -- completions from Ctags
-  { "github/copilot.vim" },
+  { "github/copilot.vim" } -- completions from Copilot,
+  { "CopilotC-Nvim/CopilotChat.nvim" }, -- completions from CopilotChat
+  { "hrsh7th/cmp-emoji" },    -- completions from emojis
 
   -- Snippets
   { "L3MON4D3/LuaSnip" },
