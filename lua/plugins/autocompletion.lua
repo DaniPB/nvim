@@ -65,6 +65,7 @@ local function cmp_setup()
       { name = "ctags" },
       { name = "buffer",  keyword_length = 3 },
       { name = "emoji" },
+      { name = "copilot" },
     },
     formatting = {
       format = lspkind.cmp_format({
@@ -102,7 +103,7 @@ return {
   { "hrsh7th/cmp-nvim-lsp" }, -- completions from LSP
   { "hrsh7th/cmp-nvim-lua" }, -- neovim lua API
   { "delphinus/cmp-ctags" },  -- completions from Ctags
-  { "github/copilot.vim" } -- completions from Copilot,
+  { "github/copilot.vim" }, -- completions from Copilot,
   { "CopilotC-Nvim/CopilotChat.nvim" }, -- completions from CopilotChat
   { "hrsh7th/cmp-emoji" },    -- completions from emojis
 
