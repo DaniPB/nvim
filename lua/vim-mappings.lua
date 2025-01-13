@@ -20,3 +20,9 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   pattern = "*.jbuilder",
   command = "set filetype=ruby",
 })
+
+vim.filetype.add({
+  extension = {
+    inky = "eruby", -- Treat .inky files as HTML with embedded Ruby
+  },
+})
