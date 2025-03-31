@@ -13,7 +13,8 @@ return {
           "lua_ls",
           "rubocop",
           "solargraph",
-          "ruby_lsp"
+          "ruby_lsp",
+          "vale-ls"
         }
       })
     end
@@ -60,12 +61,26 @@ return {
       lspconfig.ruby_lsp.setup({
         capabilities = capabilities,
       })
+      lspconfig.vale_ls.setup({
+        cmd = { "vale-ls" },
+        filetypes = { "markdown" },
+        root_dir = require("lspconfig").util.root_pattern(".vale.ini"),
+        settings = {
+          vale = {
+            version = "latest",
+            cli = {
+              "--fix", -- Enable fix mode
+            }
+          }
+        },
+        capabilities = capabilities, -- if you're using nvim-cmp capabilities
+      })
 
       vim.keymap.set("n", "H", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
-      vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, {})
+      vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
       vim.diagnostic.config({
         underline = false,
         -- virtual_text = true,
@@ -76,7 +91,7 @@ return {
         },
         signs = true,
         severity_sort = true,
-        update_in_insert = false,
+        update_in_insert = true,
         float = {
           source = 'always', -- Or 'always'
         },
