@@ -12,9 +12,8 @@ return {
         ensure_installed = {
           "lua_ls",
           "rubocop",
-          "solargraph",
           "ruby_lsp",
-          "vale-ls"
+          "vale_ls"
         }
       })
     end
@@ -36,19 +35,16 @@ return {
           }
         }
       })
-      lspconfig.solargraph.setup({
+      lspconfig.ruby_lsp.setup({
+        cmd = { 'docker', 'compose', 'exec', '-T', 'web', 'bundle', 'exec', 'ruby-lsp' },
         capabilities = capabilities,
-        settings = {
-          solargraph = {
-            diagnostics = true,
-            completion = true,
-            formatting = true
-          }
-        }
+        init_options = {
+          enabledFeatures = { "codeActions", "documentFormatting" },
+        },
       })
       lspconfig.rubocop.setup({
         capabilities = capabilities,
-        cmd = {'docker', 'compose', 'run', '--rm', 'web', 'bundle', 'exec', 'rubocop', '--lsp', '--config', '.rubocop.yml'},
+        cmd = {'docker', 'compose', 'exec', '-T', 'web', 'bundle', 'exec', 'rubocop', '--lsp', '--config', '.rubocop.yml'},
         init_options = { formatting = true },
         -- Aquí puedes agregar la configuración específica para RuboCop
         settings = {
@@ -56,10 +52,7 @@ return {
             -- Esto hará que los nombres de los cops se muestren en los mensajes de advertencia
             displayCopNames = true
           }
-        }
-      })
-      lspconfig.ruby_lsp.setup({
-        capabilities = capabilities,
+        },
       })
       lspconfig.vale_ls.setup({
         cmd = { "vale-ls" },
@@ -77,6 +70,7 @@ return {
       })
 
       vim.keymap.set("n", "H", vim.lsp.buf.hover, {})
+      vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {})
@@ -87,7 +81,8 @@ return {
         virtual_text = {
           source = true, -- Or 'if_many'
           prefix = '●', -- Could be '■', '▎', 'x'
-          spacing = 10
+          spacing = 10,
+          current_line = true,
         },
         signs = true,
         severity_sort = true,
