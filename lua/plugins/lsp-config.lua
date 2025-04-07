@@ -38,8 +38,9 @@ return {
       lspconfig.ruby_lsp.setup({
         cmd = { 'docker', 'compose', 'exec', '-T', 'web', 'bundle', 'exec', 'ruby-lsp' },
         capabilities = capabilities,
+        root_dir = require("lspconfig").util.root_pattern("Gemfile", ".git"),
         init_options = {
-          enabledFeatures = { "codeActions", "documentFormatting" },
+          enabledFeatures = { "codeActions", "documentFormatting", "references", "documentSymbol", "workspaceSymbol", "definition" },
         },
       })
       lspconfig.rubocop.setup({
