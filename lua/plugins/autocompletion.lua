@@ -64,7 +64,6 @@ local function cmp_setup()
       -- { name = "cmdline" },
       { name = "ctags" },
       { name = "buffer",  keyword_length = 3 },
-      { name = "emoji" },
       { name = "copilot" },
     },
     formatting = {
@@ -104,8 +103,6 @@ return {
   { "hrsh7th/cmp-nvim-lua" }, -- neovim lua API
   { "delphinus/cmp-ctags" },  -- completions from Ctags
   { "github/copilot.vim" }, -- completions from Copilot,
-  { "CopilotC-Nvim/CopilotChat.nvim" }, -- completions from CopilotChat
-  { "hrsh7th/cmp-emoji" },    -- completions from emojis
 
   -- Snippets
   { "L3MON4D3/LuaSnip" },
