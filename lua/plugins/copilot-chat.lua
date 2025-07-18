@@ -9,7 +9,7 @@ return {
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
       debug = true, -- Enable debugging
-      model = "claude-3.7-sonnet", -- Model to use
+      model = "claude-sonnet-4", -- Model to use
       -- See Configuration section for rest
     },
     keys = {
