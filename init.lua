@@ -22,3 +22,5 @@ local opts = {}
 require("vim-mappings")
 require("vim-options")
 require("lazy").setup("plugins")
+require("utils.docker-lsp-check")
+require("utils.lsp-status-check")
