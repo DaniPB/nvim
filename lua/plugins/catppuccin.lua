@@ -3,7 +3,7 @@ return {
     "catppuccin/nvim",
     lazy = false,
     name = "catppuccin",
-    -- priority = 1000,
+    priority = 1000,
     flavour = "mocha", -- latte, frappe, macchiato, mocha
     -- flavour = "auto", -- will respect terminal's background
     background = { -- :h background

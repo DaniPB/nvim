@@ -7,6 +7,10 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
+    lazy = false,
+    opts = {
+      auto_install = true,
+    },
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = {
@@ -21,12 +25,30 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      local lspconfig = require("lspconfig")
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
+      -- Set default capabilities for all LSP servers
+      vim.lsp.config('*', { capabilities = capabilities })
+
+      vim.lsp.config('ruby_lsp', {
+        cmd = { 'docker', 'compose', 'exec', '-T', 'web', 'bundle', 'exec', 'ruby-lsp' },
+        root_markers = { "Gemfile", ".git" },
+        init_options = {
+          enabledFeatures = { "codeActions", "documentFormatting", "references", "documentSymbol", "workspaceSymbol", "definition" },
+        },
+      })
+
+      vim.lsp.config('rubocop', {
+        cmd = {'docker', 'compose', 'exec', '-T', 'web', 'bundle', 'exec', 'rubocop', '--lsp', '--config', '.rubocop.yml'},
+        init_options = { formatting = true },
+        settings = {
+          rubocop = {
+            displayCopNames = true
+          }
+        },
+      })
+
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             diagnostics = {
@@ -35,40 +57,22 @@ return {
           }
         }
       })
-      lspconfig.ruby_lsp.setup({
-        cmd = { 'docker', 'compose', 'exec', '-T', 'web', 'bundle', 'exec', 'ruby-lsp' },
-        capabilities = capabilities,
-        root_dir = require("lspconfig").util.root_pattern("Gemfile", ".git"),
-        init_options = {
-          enabledFeatures = { "codeActions", "documentFormatting", "references", "documentSymbol", "workspaceSymbol", "definition" },
-        },
-      })
-      lspconfig.rubocop.setup({
-        capabilities = capabilities,
-        cmd = {'docker', 'compose', 'exec', '-T', 'web', 'bundle', 'exec', 'rubocop', '--lsp', '--config', '.rubocop.yml'},
-        init_options = { formatting = true },
-        -- Aquí puedes agregar la configuración específica para RuboCop
-        settings = {
-          rubocop = {
-            -- Esto hará que los nombres de los cops se muestren en los mensajes de advertencia
-            displayCopNames = true
-          }
-        },
-      })
-      lspconfig.vale_ls.setup({
+
+      vim.lsp.config('vale_ls', {
         cmd = { "vale-ls" },
         filetypes = { "markdown" },
-        root_dir = require("lspconfig").util.root_pattern(".vale.ini"),
+        root_markers = { ".vale.ini" },
         settings = {
           vale = {
             version = "latest",
             cli = {
-              "--fix", -- Enable fix mode
+              "--fix",
             }
           }
         },
-        capabilities = capabilities, -- if you're using nvim-cmp capabilities
       })
+
+      vim.lsp.enable({ 'ruby_lsp', 'rubocop', 'lua_ls', 'vale_ls' })
 
       vim.keymap.set("n", "H", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
@@ -78,10 +82,9 @@ return {
       vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
       vim.diagnostic.config({
         underline = false,
-        -- virtual_text = true,
         virtual_text = {
-          source = true, -- Or 'if_many'
-          prefix = '●', -- Could be '■', '▎', 'x'
+          source = true,
+          prefix = '●',
           spacing = 10,
           current_line = true,
         },
@@ -89,7 +92,7 @@ return {
         severity_sort = true,
         update_in_insert = true,
         float = {
-          source = 'always', -- Or 'always'
+          source = 'always',
         },
       })
     end
