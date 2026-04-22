@@ -5,6 +5,8 @@ return {
       vim.opt.tags = '.tags' -- vim `g]` and `c-]` will look at this file
       vim.g.gutentags_ctags_tagfile = '.tags' -- gutentags will write to the same file
 
+      vim.g.gutentags_ctags_executable = '/opt/homebrew/bin/ctags'
+
       vim.g.gutentags_ctags_extra_args = {
         "--exclude=.git", "--exclude=log", "--exclude=tmp", "--exclude=.bundle", "--exclude=node_modules"
       }
